@@ -46,30 +46,40 @@
     <div id="reader"></div>
     <div id="result" class="result">Waiting for scan...</div>
 
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <!-- Učitaj biblioteku preko alternative ili lokalno -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.0.3/html5-qrcode.min.js"></script>
+    
     <script>
         function onScanSuccess(decodedText, decodedResult) {
-            // Show the decoded barcode in the result div
+            // Prikazujemo dekodiran bar kod u result div-u
             document.getElementById('result').textContent = `Scanned code: ${decodedText}`;
         }
 
         function onScanFailure(error) {
-            // Handle scan failure, for example:
+            // Obrada greške pri skeniranju
             console.warn(`Code scan error = ${error}`);
         }
 
-        // Initialize the barcode scanner
-        const html5QrCode = new Html5Qrcode("reader");
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        // Proveravamo da li pretraživač podržava kameru
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            console.log("Camera access supported.");
+            
+            // Inicijalizujemo barcode scanner
+            const html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-        html5QrCode.start(
-            { facingMode: "environment" }, // Use back camera
-            config,
-            onScanSuccess,
-            onScanFailure
-        ).catch(err => {
-            console.error("Error starting the barcode scanner: ", err);
-        });
+            html5QrCode.start(
+                { facingMode: "environment" }, // Koristi zadnju kameru
+                config,
+                onScanSuccess,
+                onScanFailure
+            ).catch(err => {
+                console.error("Error starting the barcode scanner: ", err);
+            });
+
+        } else {
+            alert("Camera access not supported by your browser.");
+        }
     </script>
 
 </body>
