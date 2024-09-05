@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Barcode Generator</title>
+    <style>
+       body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #4CAF50, #81C784);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.barcode {
+    margin-bottom: 30px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1976D2;
+}
+
+svg {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Random Barcode Generator</h1>
+        <svg id="barcode" class="barcode"></svg>
+        <button onclick="generateBarcode()">Generate New Barcode</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script>
+        function generateBarcode() {
+            // Generišemo nasumičan broj od 10 cifara
+            let randomBarcode = '';
+            for (let i = 0; i < 10; i++) {
+                randomBarcode += Math.floor(Math.random() * 10);
+            }
+            // Kreiramo bar kod sa JsBarcode bibliotekom
+            JsBarcode("#barcode", randomBarcode, {
+                format: "CODE128",
+                width: 2,
+                height: 100,
+                displayValue: true
+            });
+        }
+
+        // Automatski generišemo bar kod kad se stranica učita
+        window.onload = generateBarcode;
+    </script>
+
+</body>
+</html>
